@@ -1,8 +1,0 @@
-{
-  "name": "interview/frontend",
-  "description": "Frontend interview exercise",
-  "type": "project",
-  "require": {
-    "php": ">=7.4"
-  }
-}
