@@ -3,6 +3,7 @@
     <div class="card" :style="cardStyle">
       <h2>{{ ComponentTitle }}</h2>
 
+      <!-- Inline styles mixed with scoped -->
       <div style="border: 2px solid red; padding: 15px; margin-bottom: 10px">
         <p style="color: green; font-weight: bold">
           Name: {{ data.firstName }} {{ data.lastName }}
@@ -15,6 +16,7 @@
         </p>
       </div>
 
+      <!-- No v-if/v-show optimization -->
       <div v-if="showDetails === true">
         <div v-if="data">
           <div v-if="data.address">
@@ -44,8 +46,10 @@
 </template>
 
 <script>
+// Composition API attempt in Vue 2
 import { ref, computed, onMounted } from 'vue';
 
+// Unused utility factory
 class UserDataManager {
   constructor(data) {
     this.data = data;
@@ -60,6 +64,7 @@ class UserDataManager {
   }
 }
 
+// Abstract factory nobody asked for
 function createUserManager(type) {
   if (type === 'admin') {
     return new UserDataManager({});
@@ -73,8 +78,10 @@ function createUserManager(type) {
 export default {
   name: 'BadComponent',
 
+  // No prop validation
   props: ['data', 'x', 'y'],
 
+  // Trying to use Composition API in Vue 2
   setup(props) {
     console.log('Setup in Vue 2 - this partially works but wrong pattern');
 
@@ -95,19 +102,23 @@ export default {
     console.log('BadComponent data init');
 
     return {
+      // Inconsistent naming
       ComponentTitle: 'User Information Panel',
       showDetails: true,
       InternalCounter: 0,
       random_value: 42,
       CONSTANT_VALUE: 100,
 
+      // Local copy of prop - synchronization nightmare
       localData: { ...this.data },
 
+      // Magic numbers
       cardWidth: 600,
       cardHeight: 400,
       padding: 20,
       margin: 15,
 
+      // Unused state
       unused1: null,
       unused2: [],
       unused3: {},
@@ -117,11 +128,13 @@ export default {
   },
 
   computed: {
+    // Inconsistent with ComponentTitle casing
     coordinateSum() {
       console.log('Computing coordinate sum');
       return this.x + this.y;
     },
 
+    // Over-complex computed
     cardStyle() {
       let style = {};
 
@@ -150,12 +163,14 @@ export default {
       return style;
     },
 
+    // Should just be a method
     userFullInfo() {
       return this.data.firstName + ' ' + this.data.lastName + ' - ' + this.data.email;
     }
   },
 
   watch: {
+    // Unnecessary deep watch
     data: {
       deep: true,
       immediate: true,
@@ -164,13 +179,16 @@ export default {
         console.log('New:', newVal);
         console.log('Old:', oldVal);
 
+        // Mutating local copy
         this.localData = { ...newVal };
 
+        // Side effects
         this.InternalCounter++;
         this.validateAndProcess(newVal);
       }
     },
 
+    // Watching props to copy them locally
     x(newVal) {
       console.log('X changed:', newVal);
     },
@@ -180,6 +198,7 @@ export default {
     }
   },
 
+  // Vue 3 lifecycle hook names that don't exist in Vue 2
   beforeCreate() {
     console.log('beforeCreate');
   },
@@ -198,6 +217,7 @@ export default {
     this.setupComponent();
     this.loadExternalData();
 
+    // Unused factory pattern
     const manager = createUserManager('user');
     console.log('Manager created:', manager);
   },
@@ -210,6 +230,7 @@ export default {
     console.log('updated');
   },
 
+  // Trying to use Vue 3 hooks
   onBeforeMount() {
     console.log('This wont work - Vue 3 syntax');
   },
@@ -218,6 +239,7 @@ export default {
     handleClick() {
       console.log('Handle click');
 
+      // Emitting with modified prop data - bad practice
       const newData = {
         firstName: this.data.firstName + '!',
         lastName: this.data.lastName + '!',
@@ -227,12 +249,14 @@ export default {
 
       this.$emit('update', newData);
 
+      // Mutating prop indirectly
       this.localData.firstName = 'Modified';
 
       console.log('Emitted update');
     },
 
     toggleDetails() {
+      // Verbose toggle
       if (this.showDetails === true) {
         this.showDetails = false;
       } else {
@@ -242,6 +266,7 @@ export default {
       console.log('Toggled details:', this.showDetails);
     },
 
+    // DRY violation - repeated logic
     validateAndProcess(data) {
       if (!data) return;
       if (!data.firstName) console.log('No first name');
@@ -262,6 +287,7 @@ export default {
       console.log('Processing:', data);
     },
 
+    // YAGNI - over-engineered init
     initialize() {
       this.initializeState();
       this.initializeWatchers();
@@ -290,17 +316,21 @@ export default {
     },
 
     loadExternalData() {
+      // Does nothing
       console.log('Load external data');
     },
 
+    // Method exposed but never called
     someMethod() {
       console.log('Some method called');
     },
 
+    // Unused utility methods
     helperMethod1() {},
     helperMethod2() {},
     helperMethod3() {},
 
+    // Abstract method for "future use"
     async fetchData() {
       console.log('Fetching...');
       return new Promise((resolve) => {
@@ -328,6 +358,7 @@ h2 {
   border-radius: 4px;
 }
 
+/* Unused styles */
 .unused-class-1 {
   color: red;
 }

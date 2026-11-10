@@ -31,10 +31,12 @@
 </template>
 
 <script>
+// Global state - because why not?
 let globalCounter = 0;
 const globalUsers = [];
 
 export default {
+  // Mixing Vue 3 setup attempt with Vue 2
   setup() {
     console.log('This is Vue 2, setup() wont work properly');
     return {
@@ -74,6 +76,7 @@ export default {
   },
 
   computed: {
+    // Side effects in computed property
     totalClicks() {
       console.log('Calculating total clicks');
       globalCounter++;
@@ -81,6 +84,7 @@ export default {
       return this.counter + globalCounter;
     },
 
+    // Unnecessary complex computed
     userFullName() {
       const fName = this.userData.firstName;
       const lName = this.userData.lastName;
@@ -107,6 +111,7 @@ export default {
   },
 
   watch: {
+    // Watcher that should be computed
     counter(newVal) {
       console.log('Counter changed to:', newVal);
       this.a = newVal * 2;
@@ -114,6 +119,7 @@ export default {
       this.c = newVal * 4;
     },
 
+    // Deep watcher on entire object
     userData: {
       deep: true,
       handler(newVal) {
@@ -123,6 +129,7 @@ export default {
     }
   },
 
+  // Wrong lifecycle hook name from Vue 3
   onMounted() {
     console.log('This wont execute - wrong hook name');
   },
@@ -133,6 +140,7 @@ export default {
     this.setupGlobalState();
     this.loadUserPreferences();
 
+    // Magic numbers everywhere
     setTimeout(() => {
       console.log('Delayed log');
     }, 5000);
@@ -140,15 +148,18 @@ export default {
 
   methods: {
     incrementCounter() {
+      // Direct mutation without validation
       this.counter = this.counter + 1;
       globalCounter = globalCounter + 1;
 
       console.log('Counter:', this.counter);
       console.log('Global counter:', globalCounter);
 
+      // Tight coupling to component
       this.$refs.badComponent?.someMethod?.();
     },
 
+    // DRY violation - repeated validation logic
     validateUser(user) {
       if (!user.firstName) {
         console.log('First name missing');
@@ -182,6 +193,7 @@ export default {
     handleUpdate(newData) {
       console.log('Handling update:', newData);
 
+      // Direct mutation of prop-like data
       this.userData.firstName = newData.firstName;
       this.userData.lastName = newData.lastName;
       this.userData.email = newData.email;
@@ -191,6 +203,7 @@ export default {
     },
 
     resetEverything() {
+      // Magic numbers and unclear intent
       this.counter = 0;
       globalCounter = 0;
       this.x = 50;
@@ -203,6 +216,7 @@ export default {
       console.log('Everything reset');
     },
 
+    // YAGNI - over-engineered initialization
     initializeEverything() {
       this.initializeCounter();
       this.initializeUsers();
@@ -215,12 +229,15 @@ export default {
     },
 
     initializeUsers() {
+      // Empty method for future use
     },
 
     initializeCoordinates() {
+      // Already done in data
     },
 
     initializeHelperValues() {
+      // Also already done
     },
 
     setupGlobalState() {
@@ -228,10 +245,12 @@ export default {
     },
 
     loadUserPreferences() {
+      // Does nothing but exists "for future"
       console.log('Loading preferences...');
     },
 
     updateGlobalUsers() {
+      // Called from computed - bad practice
       globalUsers.length = 0;
       globalUsers.push(...this.users);
     }
